@@ -20,5 +20,6 @@ from paperboy import views
 urlpatterns = [
     path('', views.root, name='root'),
     path('admin/', admin.site.urls),
-]
+    path('show_all', views.show_all, name='show_all'),
 
+]
