@@ -1,12 +1,13 @@
 from django.db import models
+from django.db.models import Sum
 
-class PaperBoy(models.Model):
+class Paperboy(models.Model):
     name = models.CharField(max_length=300)
     experience = models.PositiveIntegerField(default=0)
     earnings = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f'Paperboy {self.name} has {self.experience} experience and has earned ${self.earnings}.'
+        return f'Paperboy {self.name} has {self.experience} experience and has earned {self.price_in_dollars(self.earnings)}.'
 
     # def quota(self): #An instance method that calculates the PaperBoy's quota.
     #     return 50 + (self.experience / 2) #Minimum quota is 50 plus half of experience (number of papers already delivered).
@@ -24,5 +25,25 @@ class PaperBoy(models.Model):
     #     self.earnings += current_earnings #The self.earnings is added to the current_earnings.
     #     return current_earnings #The current_earnings is returned. (Not the self.earnings.)
 
-    # def report(self): #Returns an plain-English string that describes the instance.
-    #     return f"I'm {self.name}, I've delivered {self.experience} papers and I've earned ${self.earnings} so far!"
+    # def divide_by_100(self, amount):
+    #     dollars = amount / 100
+    #     return '${:.2f}'.format(dollars)
+
+    def report(self):
+        pass
+        return f"Hi, my name is {self.name}! I have delivered {self.experience} papers so far and earned {self.price_in_dollars(self.earnings)}."
+
+    @classmethod
+    def total_delivered(cls):  # Returns the total experience of all Paperboy objects.
+        return cls.objects.all().aggregate(sum_all=Sum('experience')).get('sum_all')
+
+    @classmethod
+    def price_in_dollars(cls, amount):  # Returns dollar amount with decimal place.
+        dollars = amount / 100
+        return '${:.2f}'.format(dollars)
+
+    @classmethod
+    def total_earned(cls):  # Returns the total earnings of all Paperboy objects.
+        pass
+        return cls.price_in_dollars(cls.objects.all().aggregate(sum_all=Sum('earnings')).get('sum_all'))
+

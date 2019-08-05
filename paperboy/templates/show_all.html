@@ -7,10 +7,12 @@
     <li>Total payment earned: </li>
 </ul>
 
-{% for product in products %}
-    <h2>Natalie</h2>
+{% for paperboy in paperboys %}
+    <h2>{{ paperboy.name }}</h2>
     <ul>
-        <li>Hi, my name is x. I have delivered y papers so far and earned $z.</li>
+        <li>{{ paperboy.report }}</li>
+        <li>{{ paperboy.total_delivered }}</li>
+        <li>{{ paperboy.total_earned }}</li>
         <li>Starting house number: x</li>
         <li>Starting house number: y</li>
     </ul>
